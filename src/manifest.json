@@ -1,5 +1,6 @@
 {
     	"author": "igorlogius",
+	"version": "1.0.2",
 
 	"developer": {
 		"name": "igorlogius",
@@ -8,7 +9,6 @@
     	"homepage_url": "https://github.com/igorlogius/list-feeds",
 	"name": "list-feeds",
 	"description": "list available feeds (rss,atom) inside a pageAction popup",
-	"version": "1.0.1",
 	"manifest_version": 2,
 	"icons": {
 		"256": "icon.png"
