@@ -1,0 +1,27 @@
+{
+    	"author": "igorlogius",
+
+	"developer": {
+		"name": "igorlogius",
+		"url": "https://github.com/igorlogius"
+	},
+    	"homepage_url": "https://github.com/igorlogius/list-feeds",
+	"name": "list-feeds",
+	"description": "list available feeds (rss,atom) inside a pageAction popup",
+	"version": "1.0.0",
+	"manifest_version": 2,
+	"icons": {
+		"256": "icon.png"
+	},
+	"permissions": [
+		"activeTab"
+	],
+	"page_action": {
+		"show_matches": [ "<all_urls>"],
+		"browser_style": true,
+		"default_icon": "icon.png",
+		"default_title": "list-feeds",
+		"default_popup": "popup.html"
+	}
+}
+
