@@ -29,7 +29,7 @@
 		return feeds;
 	}
 
-	function getRelFeeds() {
+	function getRelFeeds(url) {
 
 		let feeds = [];
 		const rel_links = document.querySelectorAll('link[rel*="alternate"]');
@@ -42,7 +42,13 @@
 				case 'application/atom+xml':
 				case 'application/xml':
 				case 'text/xml':
-					feeds.push(href);
+					if(href.startsWith('/')) {
+						const feedUrl = new URL(href, url.origin);
+						feeds.push(feedUrl.toString());	
+					}else{
+						feeds.push(href);
+					}
+					/**/
 					break;
 				default:
 					break;
@@ -57,7 +63,7 @@
 		let feed_urls = [];
 		const url = new URL(window.location.href);
 		feed_urls = feed_urls.concat(getYoutubeFeeds(url));
-		feed_urls = feed_urls.concat(getRelFeeds());
+		feed_urls = feed_urls.concat(getRelFeeds(url));
 		return feed_urls;
 	}
 
