@@ -1,6 +1,6 @@
 {
     	"author": "igorlogius",
-	"version": "1.0.3",
+	"version": "1.0.4",
 
 	"developer": {
 		"name": "igorlogius",
@@ -11,7 +11,7 @@
 	"description": "list available feeds (rss,atom) inside a pageAction popup",
 	"manifest_version": 2,
 	"icons": {
-		"256": "icon.png"
+		"145": "icon.png"
 	},
 	"permissions": [
 		"activeTab"
