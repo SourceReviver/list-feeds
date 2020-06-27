@@ -7,19 +7,27 @@ browser.tabs.executeScript({file: "content-script.js"}).then( () => {
 
 	return browser.tabs.query({active: true, currentWindow: true}).then( (tabs) => {
 
-		return browser.tabs.sendMessage(tabs[0].id, { cmd: extId,}).then( (urls) => {
+		return browser.tabs.sendMessage(tabs[0].id, { cmd: extId,}).then( (objs) => {
 
-			var ul = document.getElementById('feedlist');
-			ul.textContent = '';
-			urls.forEach( (url) => {
+			let ol = document.getElementById('feedlist');
+			//
+			ol.innerHTML= '<strong>Number of Feeds found: ' + objs.length + '</strong>';
+			if(objs.length < 1){ return; }
+			// 
+			objs.forEach( (obj) => {
 
-				var li = document.createElement('li');
-				var a = document.createElement('a');
-				var linkText = document.createTextNode(url);
-				a.appendChild(linkText);
+				const url = obj.url;
+				const type = obj.type;
+
+				let li = document.createElement('li');
+				let a = document.createElement('a');
+
+				li.textContent = "(" + type + ") ";
+				a.textContent = url;
 				a.href = url;
+
 				li.appendChild(a);
-				ul.appendChild(li);
+				ol.appendChild(li);
 			});
 
 		});
