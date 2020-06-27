@@ -20,8 +20,14 @@ browser.tabs.executeScript({file: "content-script.js"}).then( () => {
 			//
 			objs.sort(compare);
 
-			tbl.textContent = objs.length + ' Feeds found: ';
-			if(objs.length < 1){ return; }
+			if(objs.length < 1){ 
+				return; 
+			}
+			if(objs.length === 1){
+				tbl.textContent = objs.length + ' Feed found';
+			}else{
+				tbl.textContent = objs.length + ' Feeds found';
+			}
 			// 
 			let id_count = 1;
 			objs.forEach( (obj) => {
@@ -31,10 +37,8 @@ browser.tabs.executeScript({file: "content-script.js"}).then( () => {
 
 				let tr = tbl.insertRow();
 
-				//let li = document.createElement('li');
 				let a = document.createElement('a');
 
-				//li.textContent = "(" + type + ") ";
 				a.textContent = url;
 				a.href = url;
 
@@ -47,9 +51,6 @@ browser.tabs.executeScript({file: "content-script.js"}).then( () => {
 				var td_2 = tr.insertCell();
 				td_2.textContent = type;
 
-
-				//li.appendChild(a);
-				//ol.appendChild(li);
 			});
 
 		});
