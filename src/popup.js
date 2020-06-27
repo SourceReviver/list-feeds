@@ -11,23 +11,25 @@ browser.tabs.executeScript({file: "content-script.js"}).then( () => {
 
 			let tbl = document.getElementById('feedlist');
 			//
-			function compare(a, b) {
-				if (a.url > b.url) return 1;
-				if (b.url > a.url) return -1;
 
-				return 0;
-			}
-			//
-			objs.sort(compare);
+			tbl.textContent = objs.length + ' Feeds found';
 
 			if(objs.length < 1){ 
 				return; 
 			}
 			if(objs.length === 1){
 				tbl.textContent = objs.length + ' Feed found';
-			}else{
-				tbl.textContent = objs.length + ' Feeds found';
 			}
+
+			function compare(a, b) {
+				if (a.url > b.url) return 1;
+				if (b.url > a.url) return -1;
+				return 0;
+			}
+
+			//
+			objs.sort(compare);
+
 			// 
 			let id_count = 1;
 			objs.forEach( (obj) => {
