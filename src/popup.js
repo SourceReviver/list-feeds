@@ -9,25 +9,47 @@ browser.tabs.executeScript({file: "content-script.js"}).then( () => {
 
 		return browser.tabs.sendMessage(tabs[0].id, { cmd: extId,}).then( (objs) => {
 
-			let ol = document.getElementById('feedlist');
+			let tbl = document.getElementById('feedlist');
 			//
-			ol.innerHTML= '<strong>Number of Feeds found: ' + objs.length + '</strong>';
+			function compare(a, b) {
+				if (a.url > b.url) return 1;
+				if (b.url > a.url) return -1;
+
+				return 0;
+			}
+			//
+			objs.sort(compare);
+
+			tbl.innerHTML= '<strong>Number of Feeds found: ' + objs.length + '</strong>';
 			if(objs.length < 1){ return; }
 			// 
+			let id_count = 1;
 			objs.forEach( (obj) => {
 
 				const url = obj.url;
 				const type = obj.type;
 
-				let li = document.createElement('li');
+				let tr = tbl.insertRow();
+
+				//let li = document.createElement('li');
 				let a = document.createElement('a');
 
-				li.textContent = "(" + type + ") ";
+				//li.textContent = "(" + type + ") ";
 				a.textContent = url;
 				a.href = url;
 
-				li.appendChild(a);
-				ol.appendChild(li);
+
+				var td_1 = tr.insertCell();
+				td_1.textContent = id_count + ". ";
+				td_1.appendChild(a);
+				id_count++;
+
+				var td_2 = tr.insertCell();
+				td_2.textContent = type;
+
+
+				//li.appendChild(a);
+				//ol.appendChild(li);
 			});
 
 		});
