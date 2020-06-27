@@ -4,8 +4,8 @@
 	 * If this content script is injected into the same page again,
 	 * it will do nothing next time.
 	 */
-	if (window.hasRun) { return; }
-	window.hasRun = true;
+	if (window.listfeeds_hasRun) { return; }
+	window.listfeeds_hasRun = true;
 
 	function getYoutubeFeeds(url) {
 		let feeds = [];
@@ -33,21 +33,26 @@
 		let feeds = [];
 		const rel_links = document.querySelectorAll('link[rel*="alternate"]');
 		rel_links.forEach( (link) => {
-			let href= link.getAttribute('href').trim();
-			const type= link.getAttribute('type').trim();
+			let href = link.getAttribute('href');
+			let type = link.getAttribute('type');
+
+			if(typeof href !== "string" || typeof type !== "string"){
+				return;
+			}
+			href = href.trim();
+			type = type.trim();
 
 			switch(type){
-				case 'application/rss+xml':  // rss https://www.rssboard.org/rss-mime-type-application.txt
+				case 'application/rss+xml':  // rss 
 				case 'application/atom+xml': // atom  
-				case 'application/xml':  // either rss or atom 
-				case 'text/xml':        // either rss or atom 
-				case 'application/json': // json Feeds https://jsonfeed.org/ 
+				case 'application/xml':      // rss or atom 
+				case 'text/xml':             // rss or atom 
+				case 'application/json':     // jsonfeed 
 					if(href.startsWith('/')) {
 						const feedUrl = new URL(href, url.origin);
 						href = feedUrl.toString();
 					}
 					/**/
-					//console.log(href);
 					if( ! urls.has(href) ) {
 						feeds.push({"url": href, "type": type});
 						urls.add(href);

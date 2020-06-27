@@ -13,22 +13,18 @@ browser.tabs.executeScript({file: "content-script.js"}).then( () => {
 			//
 
 			tbl.textContent = objs.length + ' Feeds found';
-
-			if(objs.length < 1){ 
-				return; 
+			if(objs.length < 1){ return; } 
+			if(objs.length === 1){ 
+				tbl.textContent = '1 Feed found'; 
+			}else{
+				function compare(a, b) {
+					if (a.url > b.url) return 1;
+					if (b.url > a.url) return -1;
+					return 0;
+				}
+				//
+				objs.sort(compare);
 			}
-			if(objs.length === 1){
-				tbl.textContent = objs.length + ' Feed found';
-			}
-
-			function compare(a, b) {
-				if (a.url > b.url) return 1;
-				if (b.url > a.url) return -1;
-				return 0;
-			}
-
-			//
-			objs.sort(compare);
 
 			// 
 			let id_count = 1;
