@@ -20,7 +20,7 @@ browser.tabs.executeScript({file: "content-script.js"}).then( () => {
 			//
 			objs.sort(compare);
 
-			tbl.innerHTML= '<strong>Number of Feeds found: ' + objs.length + '</strong>';
+			tbl.textContent = objs.length + 'Feeds found: ';
 			if(objs.length < 1){ return; }
 			// 
 			let id_count = 1;
