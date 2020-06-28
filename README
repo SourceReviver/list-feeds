@@ -1,0 +1,12 @@
+
+# Details
+# https://addons.mozilla.org/en-US/firefox/addon/list-feeds/
+
+# Build
+wget https://github.com/igorlogius/list-feeds/archive/master.zip
+unzip -d list-feeds -j master.zip
+zip "list-feeds-$(grep '"version"' list-feeds/manifest.json  | cut -d'"' -f4).xpi" ./list-feeds/*
+
+# Clean
+rm master.zip && rm ./list-feeds/* && rmdir ./list-feeds/
+
