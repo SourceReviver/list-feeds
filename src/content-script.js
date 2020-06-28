@@ -163,11 +163,11 @@
       if (parts.length > 0) {
         const topic = parts[1]
         console.log('topic is', topic)
-        if (topic !== 'trending') {
+        if ( ["awesome","comic","darkhumor","hot","nsfw","fresh","funny"].indexOf(topic) > 0) {
           feeds.push({ url: prefix + topic + postfix, type: type })
         }
       } else {
-        // trending feed
+        // trending feed :) has no topic is the default
         feeds.push({ url: prefix + postfix, type: type })
       }
     }
