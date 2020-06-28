@@ -73,8 +73,8 @@
    */
   function getYoutubeFeeds (url) {
     const feeds = []
-    const type = 'application/atom+xml'
     if (url.host === 'www.youtube.com') {
+      const type = 'application/atom+xml'
       const feedUrl = new URL('/feeds/videos.xml', url.origin)
       if (url.pathname.startsWith('/user/')) {
         const userId = url.pathname.split('/')[2]
@@ -97,10 +97,10 @@
    *
    * */
   function getRedditFeeds (url) {
-    let feedUrl
     const feeds = []
-    const type = 'application/atom+xml'
     if (url.host === 'www.reddit.com') {
+      let feedUrl
+      const type = 'application/atom+xml'
       // main feed
       feedUrl = new URL('.rss', url.origin)
       feeds.push({ url: feedUrl.toString(), type: type })
@@ -151,25 +151,32 @@
 
   /**
    * https://9gag-rss.com/
+   * todo: post, comment and user feeds
    */
   function get9gagFeeds (url) {
-    const prefix = 'https://9gag-rss.com/api/rss/get?code=9GAG'
-    const postfix = '&format=1'
     const feeds = []
-    const type = 'application/atom+xml'
     if (url.host === '9gag.com') {
+      const baseurl = 'https://9gagrss.xyz/rss.php?channel='
+      const type = 'application/atom+xml'
       const parts = url.pathname.split('/')
 
-      if (parts.length > 0) {
-        const topic = parts[1]
-        console.log('topic is', topic)
-        if ( ["awesome","comic","darkhumor","hot","nsfw","fresh","funny"].indexOf(topic) > 0) {
-          feeds.push({ url: prefix + topic + postfix, type: type })
+      let found_channel = false
+
+      if (parts.length > 1) {
+        let channel = parts[1]
+        if(typeof channel === 'string'){
+          channel = channel.trim()
+          if(channel.trim() !== ''){
+            feeds.push({ url: baseurl + channel , type: type })
+            found_channel=true;
+          }
         }
-      } else {
-        // trending feed :) has no topic is the default
-        feeds.push({ url: prefix + postfix, type: type })
+      } 
+      if(!found_channel) {
+        // 9gagrss has no trending ... booh
+        feeds.push({ url: 'https://9gag-rss.com/api/rss/get?code=9GAG&format=1', type: type })
       }
+
     }
     return feeds
   }
