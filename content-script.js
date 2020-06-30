@@ -50,8 +50,8 @@
         case 'application/xml': // rss or atom
         case 'text/xml': // rss or atom
         case 'application/json': // jsonfeed
-          if (href.startsWith('/')) {
-            const feedUrl = new URL(href, url.origin)
+          if ( !href.startsWith('http') && !href.startsWith('//') ) {
+            const feedUrl = new URL(href, url.origin + url.pathname)
             href = feedUrl.toString()
           }
           /**/
