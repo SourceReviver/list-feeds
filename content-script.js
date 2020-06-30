@@ -27,11 +27,12 @@
     feeds = feeds.concat(get9gagFeeds(url))
     feeds = feeds.concat(getGithubFeeds(url))
     feeds = feeds.concat(getHackerNewsFeeds(url))
+    feeds = feeds.concat(getGoogleNewsFeeds(url))
  
     /**/
-	  // ADD MORE HERE
+    // ADD MORE HERE
     /**/
-	// filter duplicates 
+  // filter duplicates 
     /**/
     return [ ...new Set(feeds)];
   }
@@ -79,7 +80,6 @@
   function getYoutubeFeeds (url) {
     const feeds = []
     if (url.host === 'www.youtube.com') {
-      const type = 'application/atom+xml'
       const feedUrl = new URL('/feeds/videos.xml', url.origin)
       if (url.pathname.startsWith('/user/')) {
         const userId = url.pathname.split('/')[2]
@@ -105,7 +105,6 @@
     const feeds = []
     if (url.host === 'www.reddit.com') {
       let feedUrl
-      const type = 'application/atom+xml'
       // main feed
       feedUrl = new URL('.rss', url.origin)
       feeds.push(feedUrl.toString())
@@ -162,7 +161,6 @@
     const feeds = []
     if (url.host === '9gag.com') {
       const baseurl = 'https://9gagrss.xyz/rss.php?channel='
-      const type = 'application/atom+xml'
       const parts = url.pathname.split('/')
 
       let found_channel = false
@@ -192,7 +190,6 @@
     let feedUrl;
      let user;
      let repo;
-          const type = 'application/atom+xml'
           const parts = url.pathname.split('/')
     //parts.forEach( (part) => { console.log(part); });
     if(parts.length > 0) { // user 
@@ -216,57 +213,83 @@
 
     if(url.host === 'news.ycombinator.com') {
       const baseurl = 'https://hnrss.org'
-      const type = 'application/atom+xml'
       let feedUrl;
       const parts = url.pathname.split('/')
 
       feedUrl = new URL("/rss" , url.origin)
       feeds.push(feedUrl.toString())
-	
+  
 
       if(parts.length > 0) { // user 
-	      const part1 = parts[1]
-	      switch(parts[1]) {
-		      case 'front':
-		      case 'news':      
-				feeds.push( baseurl + '/frontpage');
-			break;
-		      case 'newest':
-		      case 'newcomments':
-		      case 'ask':
-		      case 'show':
-		      case 'jobs':
-			      feeds.push( baseurl + '/' + part1 );
-			      break;
-		      case 'user':
-		      case 'threads':
-		      case 'submitted':
-		      case 'favorites':
-			      if (url.searchParams.has('id')) {
-				      for ( i of ['user','submitted','threads' ] ){
-					      feedUrl = new URL('/' + i , baseurl);
-					      feedUrl.searchParams.set('id', url.searchParams.get('id'))
-					      feeds.push( feedUrl.toString())
-				      }
-			      }
-			      break;
-		      case 'from':
+        const part1 = parts[1]
+        switch(parts[1]) {
+          case 'front':
+          case 'news':      
+        feeds.push( baseurl + '/frontpage');
+      break;
+          case 'newest':
+          case 'newcomments':
+          case 'ask':
+          case 'show':
+          case 'jobs':
+            feeds.push( baseurl + '/' + part1 );
+            break;
+          case 'user':
+          case 'threads':
+          case 'submitted':
+          case 'favorites':
+            if (url.searchParams.has('id')) {
+              for ( i of ['user','submitted','threads' ] ){
+                feedUrl = new URL('/' + i , baseurl);
+                feedUrl.searchParams.set('id', url.searchParams.get('id'))
+                feeds.push( feedUrl.toString())
+              }
+            }
+            break;
+          case 'from':
 
-			      break;
-		      case 'item':
-			      if (url.searchParams.has('id')) {
-					feedUrl = new URL( '/' + parts[1], baseurl);
-					feedUrl.searchParams.set('id', url.searchParams.get('id'))
-					feeds.push(feedUrl.toString())
-			      }
-			      break;
-		      default:
-			      break;
-	      }
+            break;
+          case 'item':
+            if (url.searchParams.has('id')) {
+          feedUrl = new URL( '/' + parts[1], baseurl);
+          feedUrl.searchParams.set('id', url.searchParams.get('id'))
+          feeds.push(feedUrl.toString())
+            }
+            break;
+          default:
+            break;
+        }
       }
     }
     return feeds;
   }
 
+  /**
+   * 
+   **/
+  function getGoogleNewsFeeds(url) {
+    const feeds = []
+
+    if(url.host === 'news.google.com') {
+      let feedUrl;
+      const parts = url.pathname.split('/')
+
+      feedUrl = new URL("/rss" , url.origin)
+      feeds.push(feedUrl.toString())
+
+      if(parts.length > 1) { 
+        const part1 = parts[1]
+        const part2 = parts[2]
+        switch(part1) {
+          case 'topics':
+            feedUrl = new URL("/rss/topics/" + part2, url.origin);
+            feeds.push(feedUrl.toString())
+            break;
+        }
+      }
+    }
+    return feeds
+  }
+  
 
 })()
