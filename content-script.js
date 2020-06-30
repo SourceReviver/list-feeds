@@ -24,6 +24,7 @@
     feeds = feeds.concat(getYoutubeFeeds(url))
     feeds = feeds.concat(getRedditFeeds(url))
     feeds = feeds.concat(get9gagFeeds(url))
+    feeds = feeds.concat(getGithubFeeds(url))
     return feeds
   }
 
@@ -180,4 +181,30 @@
     }
     return feeds
   }
+
+ function getGithubFeeds(url) {
+  const feeds = []
+   if(url.host === 'github.com') {
+    let feedUrl;
+     let user;
+     let repo;
+          const type = 'application/atom+xml'
+          const parts = url.pathname.split('/')
+    //parts.forEach( (part) => { console.log(part); });
+    if(parts.length > 0) { // user 
+       user = parts[1];
+            feedUrl = new URL(user + ".atom" , url.origin)
+            feeds.push({ url: feedUrl.toString(), type: type })
+    }
+     if(parts.length > 1) {  // repo releases and tags
+      repo = parts[2];
+            feedUrl = new URL(user + "/" + repo + "/releases.atom" , url.origin)
+            feeds.push({ url: feedUrl.toString(), type: type })
+            feedUrl = new URL(user + "/" + repo + "/tags.atom" , url.origin)
+            feeds.push({ url: feedUrl.toString(), type: type })
+    }
+   }
+   return feeds;
+ }
+
 })()
