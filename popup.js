@@ -1,51 +1,44 @@
 
 const extId = 'list-feeds'
 
-function onError (e) { console.log(`${extId}::onError: ${e}`) }
+async function init() {
 
-browser.tabs.executeScript({ file: 'content-script.js' }).then(() => {
-  return browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
-    return browser.tabs.sendMessage(tabs[0].id, { cmd: extId }).then((objs) => {
-      const tbl = document.getElementById('feedlist')
+	try {
+	await browser.tabs.executeScript({ file: 'content-script.js' });
 
-      //
-      tbl.textContent = objs.length + ' Feeds found'
-      if (objs.length < 1) { return }
-      if (objs.length === 1) {
-        tbl.textContent = '1 Feed found'
-      } else {
-	      /*
-        objs.sort((a, b) => {
-          if (a.url > b.url) { return 1 }
-          if (b.url > a.url) { return -1 }
-          return 0
-        }
-        ) */
-      }
+	const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+	const objs = await browser.tabs.sendMessage(tabs[0].id, { cmd: extId });
 
-      //
-      let idCounter = 1
-      objs.forEach((url) => {
-	      /*
-        const url = obj.url
-        const type = obj.type
-		*/
-        const tr = tbl.insertRow()
+	const tbl = document.getElementById('feedlist');
 
-        const a = document.createElement('a')
+	//
+	tbl.textContent = objs.length + ' Feeds found'
+	if (objs.length < 1) { return; }
+	if (objs.length === 1) {
+		tbl.textContent = '1 Feed found'
+	} 
 
-        a.textContent = url
-        a.href = url
+	//
+	let idCounter = 1
+	objs.forEach((url) => {
 
-        var td1 = tr.insertCell()
-        td1.textContent = idCounter + '. '
-        td1.appendChild(a)
-        idCounter++
+		const tr = tbl.insertRow()
+		const a = document.createElement('a')
 
-        /*var td2 = tr.insertCell()
-        td2.textContent = type
-	*/
-      })
-    })
-  })
-}).catch(onError)
+		a.textContent = url
+		a.href = url
+
+		var td1 = tr.insertCell()
+		td1.textContent = idCounter + '. '
+		td1.appendChild(a)
+		idCounter++
+
+	});
+	}catch(e){
+		console.error(e);
+	}
+
+}
+
+init();
+

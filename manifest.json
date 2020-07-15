@@ -1,10 +1,25 @@
 {
   "author": "igorlogius",
   "description": "list available feeds (rss,atom) inside a pageAction popup",
-  "icons": { "145": "icon.png" },
+  "icons": {
+    "145": "icon.png"
+  },
   "manifest_version": 2,
   "name": "list-feeds",
-  "page_action": { "browser_style": true, "default_icon": "icon.png", "default_popup": "popup.html", "default_title": "list-feeds", "hide_matches": [ "*://addons.mozilla.org/*" ], "show_matches": [ "<all_urls>" ] },
-  "permissions": [ "activeTab" ],
-  "version": "1.4.1"
+  "page_action": {
+    "browser_style": true,
+    "default_icon": "icon.png",
+    "default_popup": "popup.html",
+    "default_title": "list-feeds",
+    "hide_matches": [
+      "*://addons.mozilla.org/*"
+    ],
+    "show_matches": [
+      "<all_urls>"
+    ]
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "version": "1.4.2"
 }
