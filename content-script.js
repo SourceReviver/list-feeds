@@ -25,8 +25,6 @@
     feeds = feeds.concat(getYoutubeFeeds(url));
     feeds = feeds.concat(getRedditFeeds(url));
     feeds = feeds.concat(getGithubFeeds(url));
-    feeds = feeds.concat(getHackerNewsFeeds(url));
-    feeds = feeds.concat(getGoogleNewsFeeds(url));
  
     /**/
     // ADD MORE HERE
