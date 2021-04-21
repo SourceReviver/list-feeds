@@ -4,17 +4,9 @@
    * If this content script is injected into the same page again,
    * it will do nothing next time.
    */
-  if (window.listfeeds_hasRun) { return; }
+  if (window.listfeeds_hasRun) { return getFeeds(); }
   window.listfeeds_hasRun = true;
 
-  /**
-   * Listen for messages from the background script.
-   */
-  browser.runtime.onMessage.addListener((message) => {
-    return Promise.resolve(getFeeds());
-  })
-
-   
   /**
    * General entrypoint to collect all feeds
    */
@@ -171,4 +163,5 @@
     return feeds;
   }
 
+  return getFeeds();
 })();
