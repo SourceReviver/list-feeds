@@ -121,12 +121,12 @@
 			let user;
 			let repo;
 			const parts = url.pathname.split('/');
-			if(parts.length > 0) { // user 
+			if(parts.length > 1) { // user 
 				user = parts[1];
 				feedUrl = new URL(user + ".atom" , url.origin);
 				feeds.push(feedUrl.toString());
 			}
-			if(parts.length > 1) {  // repo releases and tags
+			if(parts.length > 2) {  // repo releases and tags
 				repo = parts[2];
 				feedUrl = new URL(user + "/" + repo + "/releases.atom" , url.origin);
 				feeds.push(feedUrl.toString());
