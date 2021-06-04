@@ -1,19 +1,28 @@
 {
   "author": "igorlogius",
-  "description": "list available feeds (rss,atom,json) ",
+  "description": "list available feeds (rss,atom,json)",
   "icons": {
     "145": "icon.png"
+  },
+  "background": {
+	"scripts": ["background.js"]
   },
   "manifest_version": 2,
   "name": "list-feeds",
   "browser_action": {
     "browser_style": true,
+    "default_popup": "popup.html"
+  },
+  "page_action": {
+    "browser_style": true,
     "default_icon": "icon.png",
-    "default_popup": "popup.html",
-    "default_title": "list-feeds"
+    "default_popup": "popup.html"
   },
   "permissions": [
     "activeTab"
   ],
-  "version": "1.6.6"
+  "optional_permissions": [
+    "<all_urls>"
+  ],
+  "version": "1.7.6"
 }
