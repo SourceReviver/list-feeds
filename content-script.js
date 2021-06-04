@@ -157,6 +157,92 @@
 		return feeds;
 	}
 
+	/**
+	 * https://support.bitchute.com/content/converting-a-bitchute-channel-into-an-rss-feed?from_search=66055530
+	 **/ 
+	function getBitchute(url) {
+		const feeds = [];
+		if(url.host.endsWith('bitchute.com')) {
+			let feedUrl;
+			const parts = url.pathname.split('/');
+			if(parts.length > 1) {
+				if (parts[1] === 'channel') {
+					const channelname_selector = '.owner > a:nth-child(1)';
+					const channelname = document.querySelector(channelname_selector).innerText;
+					if(channelname !== '') {
+	 					// https://www.bitchute.com/feeds/rss/channel/CHANNELNAME
+						feedUrl = new URL('/feeds/rss/channel/' + channelname ,url.origin);	
+						feeds.push(feedUrl.toString());
+					}
+				}
+			}
+		}
+		return feeds;
+	}
+
+
+	/**
+	 *  htps://developer.vimeo.com/api/reference/users#get_feed
+	 **/ 
+	function getVimeo(url) {
+		const feeds = [];
+		if(url.host.endsWith('vimeo.com')) {
+			let feedUrl;
+			const parts = url.pathname.split('/');
+			if(parts.length === 2) {
+				const channelname = parts[1]; 
+				// TODO: there might be a better way to determine if it is a real channel or some meta page, but the selectors dont seem very promising 
+				if(!['','watch','create','upload','features','blog','for-hire','stock','ott','solutions','enterprise','partners','upgrade'].includes(channelname)) {
+					// https://vimeo.com/<channel>/videos/rss
+					feedUrl = new URL('/' + channelname + '/videos/rss' ,url.origin);	
+					feeds.push(feedUrl.toString());
+				}
+			}
+		}
+		return feeds;
+	}
+
+
+	/**
+	 * 
+	 **/ 
+	function getOdysee(url) {
+		const feeds = [];
+		// INOF: lbry.tv seems to be deprecated, but lets leave it for now
+		if(url.host.endsWith('odysee.com') || url.host.endsWith('lbry.tv')) { 
+			let feedUrl;
+			const parts = url.pathname.split('/');
+			if(parts.length > 1) {
+				const channelname = parts[1]; 
+				if(channelname.startsWith('@')) {
+					if(channelname !== '') {
+						feeds.push('https://lbryfeed.melroy.org/channel/odysee/' + channelname);
+					}
+				}
+			}
+		}
+		return feeds;
+	}
+
+
+	/**
+	 *  https://hiverrss.com
+	 **/ 
+	function getHive(url) {
+		const feeds = [];
+		if(url.host.endsWith('hive.blog') || url.host.endsWith('steemit.com')) {
+			const parts = url.pathname.split('/');
+			if(parts.length > 1) {
+				if (parts[1][0] === '@') {
+					const userId = parts[1];
+					feeds.push('https://hiverss.com/' + userId + '/feed');
+					feeds.push('https://hiverss.com/' + userId + '/blog');
+					feeds.push('https://hiverss.com/' + userId + '/comments');
+				}
+			}
+		}
+		return feeds;
+	}
 
 	function getFeeds() {
 		let feeds = [];
@@ -166,6 +252,10 @@
 		feeds = feeds.concat(getRedditFeeds(url));
 		feeds = feeds.concat(getGithubFeeds(url));
 		feeds = feeds.concat(getWikipedia(url));
+		feeds = feeds.concat(getBitchute(url));
+		feeds = feeds.concat(getVimeo(url));
+		feeds = feeds.concat(getOdysee(url));
+		feeds = feeds.concat(getHive(url));
 
 		/**/
 		// ADD MORE HERE
