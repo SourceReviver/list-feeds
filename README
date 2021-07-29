@@ -5,7 +5,7 @@ AMO='https://addons.mozilla.org/en-US/firefox/addon/list-feeds'
 
 # check dependencies
 MISSING_REQ=0
-for req in mktemp wget unzip zip grep cut date;do
+for req in mktemp wget unzip zip grep cut date basename;do
 	type $req >/dev/null 2>&1 || { echo >&2 "Missing dependency: $req"; MISSING_REQ=1; }
 done
 [ $MISSING_REQ -ne 0 ] && { echo "Aborting because of missing dependency"; exit 1; }
